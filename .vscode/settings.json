@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "dreamcore2dgame.sln"
+    "dotnet.defaultSolution": "Dreamcore.sln"
 }
