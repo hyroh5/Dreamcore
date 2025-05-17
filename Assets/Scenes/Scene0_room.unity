@@ -330,8 +330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueText: {fileID: 992357003}
-  typingSpeed: 0.05
-  fullText: Wake up.... again
+  typingSpeed: 0.1
+  deletingSpeed: 0
+  delayBeforeDelete: 1
 --- !u!1 &774176751
 GameObject:
   m_ObjectHideFlags: 0
