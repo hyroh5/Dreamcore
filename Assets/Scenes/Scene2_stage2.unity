@@ -763,6 +763,22 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 0.6464793
       objectReference: {fileID: 0}
+    - target: {fileID: 212431366098927598, guid: edb390b8526cad0458bf78fbcbe0b380, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212431366098927598, guid: edb390b8526cad0458bf78fbcbe0b380, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212431366098927598, guid: edb390b8526cad0458bf78fbcbe0b380, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212431366098927598, guid: edb390b8526cad0458bf78fbcbe0b380, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -35,6 +35,23 @@ public class PlayerMove : MonoBehaviour
             rigid.velocity = new Vector2(maxSpeed * (-1), rigid.velocity.y);
         //강제로 maxSpeed 또는 -maxSpeed로 제한
         //이렇게 안 하면 계속 AddForce가 누적돼서 속도가 무한히 빨라질 수 있음
+
+
+        //Landing Ploatform
+        if (rigid.velocity.y < 0) //내려갈떄만 스캔
+        {
+            Debug.DrawRay(rigid.position, Vector3.down, new Color(0, 1, 0));
+            RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, Vector3.down, 1, LayerMask.GetMask("Platform"));
+            if (rayHit.collider != null)
+            {
+                if (rayHit.distance < 0.5f)
+                {
+                    anim.SetBool("isJumping", false);
+                }
+            }
+        }
+
+
     }
 
     private void Update() // 60번/1초 -> 단발적인 키 입력(ex 점프)은 Update에서
@@ -60,10 +77,10 @@ public class PlayerMove : MonoBehaviour
         // 캐릭터가 왼쪽으로 이동하면(왼쪽키가 눌리고 있으면) 방향 뒤집기
 
         // @ 점프 구현
-        if (Input.GetKeyDown(KeyCode.PageUp))
+        if (Input.GetButtonDown("Jump") && !anim.GetBool("isJumping"))
         {
             rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-            // 위 방향으로 jumpPower만큼 힘
+            anim.SetBool("isJumping", true);
         }
 
         // @ 애니메이션 전환
