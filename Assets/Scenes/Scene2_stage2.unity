@@ -552,7 +552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 2
-  jumpPower: 1
+  jumpPower: 5
 --- !u!70 &1381176707
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -585,8 +585,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.15888667, y: -0.08625287}
-  m_Size: {x: 0.55354357, y: 1.8427974}
+  m_Offset: {x: -0.15888667, y: -0.06901139}
+  m_Size: {x: 0.55354357, y: 1.8083144}
   m_Direction: 0
 --- !u!50 &1381176708
 Rigidbody2D:
@@ -714,6 +714,10 @@ PrefabInstance:
     - target: {fileID: 1236975803433332, guid: edb390b8526cad0458bf78fbcbe0b380, type: 3}
       propertyPath: m_Name
       value: +Speechbox_Universalcolor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1236975803433332, guid: edb390b8526cad0458bf78fbcbe0b380, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4621716550135704, guid: edb390b8526cad0458bf78fbcbe0b380, type: 3}
       propertyPath: m_LocalPosition.x
