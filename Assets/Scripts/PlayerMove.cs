@@ -38,18 +38,21 @@ public class PlayerMove : MonoBehaviour
 
 
         //Landing Ploatform
-        if (rigid.velocity.y < 0) //내려갈떄만 스캔
+        if (rigid.velocity.y < 0) // 내려갈 때만 스캔
         {
-            Debug.DrawRay(rigid.position, Vector3.down, new Color(0, 1, 0));
-            RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, Vector3.down, 1, LayerMask.GetMask("Platform"));
+            Vector2 rayOrigin = rigid.position + Vector2.down * 0.5f; // 발 근처에서 시작
+            Vector2 direction = Vector2.down;
+            float rayLength = 0.7f;
+
+            Debug.DrawRay(rayOrigin, direction * rayLength, Color.green);
+
+            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, direction, rayLength, LayerMask.GetMask("Platform"));
             if (rayHit.collider != null)
             {
-                if (rayHit.distance < 0.5f)
-                {
-                    anim.SetBool("isJumping", false);
-                }
+                anim.SetBool("isJumping", false);
             }
         }
+
 
 
     }
