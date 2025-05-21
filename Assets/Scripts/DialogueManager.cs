@@ -1,24 +1,24 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
 
-    public TextMeshProUGUI dialogueText;  // TMP Text 연결
+    public GameObject playerTextboxObject;
+    public GameObject npcTextboxObject;
+    public TextMeshProUGUI playerTextbox;
+    public TextMeshProUGUI npcTextbox;
     public GameObject nextButton;
 
-    public float typingSpeed = 0.5f;     // 한 글자당 딜레이
-    public float deletingSpeed = 0.03f;
-    public float delayBeforeDelete = 1.0f;
+    public float typingSpeed = 0.05f;
+    public float delayBeforeNext = 0.5f;
 
-
-
-    private string[] messages;// 출력할 문장
-    private int currentIndex = 0;
+    private DialogueTurn[] dialogueTurns;
+    private int turnIndex = 0;
+    private int lineIndex = 0;
     private bool isTyping = false;
 
     private void Awake()
@@ -26,46 +26,84 @@ public class DialogueManager : MonoBehaviour
         if (Instance == null) Instance = this;
     }
 
-    public void StartDialogue(string[] lines)
+    public void StartDialogue(DialogueTurn[] turns)
     {
-        messages = lines;
-        currentIndex = 0;
+        dialogueTurns = turns;
+        turnIndex = 0;
+        lineIndex = 0;
         nextButton.SetActive(false);
-        StartCoroutine(TypeText(messages[currentIndex]));
+        StartCoroutine(TypeCurrentLine());
     }
 
     public void OnNextButtonPressed()
     {
         if (isTyping) return;
 
-        currentIndex++;
+        lineIndex++;
 
-        if (currentIndex >= messages.Length)
+        if (lineIndex >= dialogueTurns[turnIndex].lines.Length)
         {
-            nextButton.SetActive(false);
-            return;
+            // 다음 턴으로
+            turnIndex++;
+            lineIndex = 0;
+
+            if (turnIndex >= dialogueTurns.Length)
+            {
+                EndDialogue();
+                return;
+            }
         }
 
-        StartCoroutine(TypeText(messages[currentIndex]));
+        nextButton.SetActive(false);
+        StartCoroutine(TypeCurrentLine());
+    }
+    private void EndDialogue()
+    {
+        playerTextbox.text = "";
+        npcTextbox.text = "";
+        nextButton.SetActive(false);
+        Debug.Log("대화 종료");
     }
 
-    IEnumerator TypeText(string sentence) // 문자열을 한 글자씩 출력하는 코루틴 함수
+    IEnumerator TypeCurrentLine()
     {
         isTyping = true;
-        dialogueText.text = "";
-        nextButton.SetActive(false); // 타이핑 시작 시 버튼 숨김
+        nextButton.SetActive(false);
 
-        foreach (char c in sentence) // 한 글자씩 출력
+        DialogueTurn currentTurn = dialogueTurns[turnIndex];
+        string sentence = currentTurn.lines[lineIndex];
+
+        // 말풍선 초기화
+        playerTextbox.text = "";
+        npcTextbox.text = "";
+
+        // 말풍선 표시 제어
+        playerTextboxObject.SetActive(currentTurn.speaker == Speaker.Player);
+        npcTextboxObject.SetActive(currentTurn.speaker == Speaker.NPC);
+
+        TextMeshProUGUI targetBox = currentTurn.speaker == Speaker.Player ? playerTextbox : npcTextbox;
+
+        foreach (char c in sentence)
         {
-            dialogueText.text += c;
+            targetBox.text += c;
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        yield return new WaitForSeconds(delayBeforeDelete);
         isTyping = false;
-        nextButton.SetActive(true);
+
+        if (lineIndex == dialogueTurns[turnIndex].lines.Length - 1)
+        {
+            yield return new WaitForSeconds(delayBeforeNext);
+            nextButton.SetActive(true);
+        }
+        else
+        {
+            lineIndex++;
+            yield return new WaitForSeconds(delayBeforeNext);
+            StartCoroutine(TypeCurrentLine());
+        }
     }
 
-    
-    
+
+
 }

@@ -46,8 +46,14 @@ public class PlayerMove : MonoBehaviour
 
             Debug.DrawRay(rayOrigin, direction * rayLength, Color.green);
 
-            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, direction, rayLength, LayerMask.GetMask("Platform"));
-            if (rayHit.collider != null)
+            RaycastHit2D rayHitPlatform = Physics2D.Raycast(rayOrigin, direction, rayLength, LayerMask.GetMask("Platform"));
+            if (rayHitPlatform.collider != null)
+            {
+                anim.SetBool("isJumping", false);
+            }
+
+            RaycastHit2D rayHitObstacle = Physics2D.Raycast(rayOrigin, direction, rayLength, LayerMask.GetMask("Obstacle"));
+            if (rayHitObstacle.collider != null)
             {
                 anim.SetBool("isJumping", false);
             }
