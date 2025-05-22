@@ -12,6 +12,7 @@ public class DialogueSequenceController : MonoBehaviour
 
     public GameObject dialogueUI;
     public PlayerMove playerScript;
+    public Animator playerAnimator;
 
     void Awake()
     {
@@ -34,6 +35,8 @@ public class DialogueSequenceController : MonoBehaviour
     private IEnumerator ZoomAndPause(System.Action onDone = null)
     {
         playerScript.enabled = false;
+
+        playerAnimator.SetBool("isWalking", false);
 
         float t = 0f;
         float duration = 1f;
