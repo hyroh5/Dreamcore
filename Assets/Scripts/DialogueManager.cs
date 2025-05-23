@@ -6,6 +6,7 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
+    public GameObject dialogueCanvas;
 
     public GameObject playerTextboxObject;
     public GameObject npcTextboxObject;
@@ -61,8 +62,9 @@ public class DialogueManager : MonoBehaviour
     {
         playerTextbox.text = "";
         npcTextbox.text = "";
-        nextButton.SetActive(false);
-        Debug.Log("대화 종료");
+        dialogueCanvas.SetActive(false);
+
+        DialogueSequenceController.Instance.EndSequence();
     }
 
     IEnumerator TypeCurrentLine()

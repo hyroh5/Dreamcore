@@ -6,6 +6,7 @@ public class MonologueTrigger : MonoBehaviour
 {
     [Header("Trigger 조건")]
     public Transform player; // 누구 머리위로 말풍선이 따라 이동하는지 결정
+    public GameObject monologueCanvas;
     public float triggerDistance = 2f; 
     public bool triggerOnce = true;
 
@@ -36,7 +37,7 @@ public class MonologueTrigger : MonoBehaviour
 
     IEnumerator ShowSpeechBubble()
     {
-        Transform canvasTransform = GameObject.Find("DialogueCanvas").transform;
+        Transform canvasTransform = GameObject.Find("MonologueCanvas").transform;
         GameObject bubble = Instantiate(speechBubblePrefab, player.position + offset, Quaternion.identity, canvasTransform);
 
         RectTransform rect = bubble.GetComponent<RectTransform>();
@@ -74,6 +75,7 @@ public class MonologueTrigger : MonoBehaviour
         }
 
         Destroy(bubble);
+        monologueCanvas.gameObject.SetActive(false);
     }
 
 }
