@@ -17,11 +17,6 @@ public class TypingEffect_Stage1 : MonoBehaviour
         "Why would there be a sign like that here...?"
     }; // 출력할 문장
 
-    void Start()
-    {
-        if (nextButton != null)
-            nextButton.SetActive(false);  // 씬 시작 시 버튼을 숨김 상태로 비활성화
-    }
     IEnumerator TypeSequence() // 전체 메세지 순차 출력하는 코루틴 함수
     {
         for (int i = 0; i < messages.Length; i++) // 모든 문장 순회
@@ -65,7 +60,7 @@ public class TypingEffect_Stage1 : MonoBehaviour
         SceneManager.LoadScene("Scene2_stage2");
     }
     public void StartTyping()
-{
-    StartCoroutine(TypeSequence());
-}
+    {
+        StartCoroutine(TypeSequence());
+    }
 }
