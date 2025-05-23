@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TypingEffect_Stage1 : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;  // TMP Text 연결
-    public float typingSpeed = 0.5f;     // 한 글자당 딜레이
-    public float deletingSpeed = 0.03f;
+    public float typingSpeed = 0.1f;     // 한 글자당 딜레이
+    public float deletingSpeed = 0.0f;
     public float delayBeforeDelete = 1.0f;
     public GameObject nextButton;
     private string[] messages = {
         "Beta version...? That's... weird.",
         "Why would there be a sign like that here...?"
     }; // 출력할 문장
-    // Start is called before the first frame update
-    public void StartTyping() // 표지판트리거함수에서 사용
+
+    void Start()
     {
-        StartCoroutine(TypeSequence());
+        if (nextButton != null)
+            nextButton.SetActive(false);  // 씬 시작 시 버튼을 숨김 상태로 비활성화
     }
     IEnumerator TypeSequence() // 전체 메세지 순차 출력하는 코루틴 함수
     {
@@ -33,7 +36,11 @@ public class TypingEffect_Stage1 : MonoBehaviour
             if (i != messages.Length - 1)
                 yield return StartCoroutine(DeleteText());
         }
+        // 두번째 문장까지 모두 출력이 끝난 후 버튼이 보이게 설정
+        if (nextButton != null)
+            nextButton.SetActive(true);
     }
+
     IEnumerator TypeText(string sentence) // 문자열을 한 글자씩 출력하는 코루틴 함수
     {
         dialogueText.text = ""; // 이전에 저장되었던 텍스트 초기화 
@@ -43,7 +50,8 @@ public class TypingEffect_Stage1 : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
     }
-IEnumerator DeleteText() // 텍스트를 한 글자씩 지우는 코루틴 함수
+
+    IEnumerator DeleteText() // 텍스트를 한 글자씩 지우는 코루틴 함수
     {
         while (dialogueText.text.Length > 0) // 텍스트가 남아 있을 동안 반복
         {
@@ -51,4 +59,13 @@ IEnumerator DeleteText() // 텍스트를 한 글자씩 지우는 코루틴 함�
             yield return new WaitForSeconds(deletingSpeed);
         }
     }
+    // 버튼 클릭 시 호출될 함수
+    public void OnClickNextScene() // 버튼을 눌렀을 때 stage2 씬으로 전환
+    {
+        SceneManager.LoadScene("Scene2_stage2");
+    }
+    public void StartTyping()
+{
+    StartCoroutine(TypeSequence());
+}
 }
