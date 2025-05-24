@@ -90,7 +90,7 @@ public class TerminalTextEffect : MonoBehaviour
         stage6background flasher = world2image.GetComponent<stage6background>();
         if (flasher != null)
         {
-            damagedimageText.SetActive(true);
+            
             flasher.StartFlashing();
         }
     }
