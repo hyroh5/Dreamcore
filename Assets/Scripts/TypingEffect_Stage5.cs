@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class TypingEffect_Stage1 : MonoBehaviour, ITypingEffect
+public class TypingEffect_Stage5 : MonoBehaviour, ITypingEffect
 {
     public TextMeshProUGUI dialogueText;
     public float typingSpeed = 0.1f;
@@ -12,8 +12,8 @@ public class TypingEffect_Stage1 : MonoBehaviour, ITypingEffect
     public float delayBeforeDelete = 1.0f;
     public GameObject nextButton;
     private string[] messages = {
-        "Beta version...? That's... weird.",
-        "Why would there be a sign like that here...?"
+        "I’m...",
+        "flagged for deletion..."
     };
 
     IEnumerator TypeSequence()
@@ -50,7 +50,7 @@ public class TypingEffect_Stage1 : MonoBehaviour, ITypingEffect
 
     public void OnClickNextScene()
     {
-        SceneManager.LoadScene("Scene2_stage2");
+        SceneManager.LoadScene("Scene6_stage6");
     }
 
     public void StartTyping()
@@ -58,3 +58,4 @@ public class TypingEffect_Stage1 : MonoBehaviour, ITypingEffect
         StartCoroutine(TypeSequence());
     }
 }
+
