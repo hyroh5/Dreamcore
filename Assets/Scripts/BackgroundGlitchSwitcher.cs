@@ -6,6 +6,7 @@ public class BackgroundGlitchSwitcher : MonoBehaviour
 {
     public Image Image_BG; // 배경 이미지 (하나만 사용)
     public GameObject GlitchOverlay; // 글리치 효과 오버레이 오브젝트
+    public GameObject GlitchHouse; // 집 깜빡일 때 덧입혀지는 이미지지
 
     public float switchInterval = 3f; // 글리치 세션 간 간격 (기본 3초)
     public int minFlickers = 2; // 최소 깜빡임 횟수
@@ -34,12 +35,14 @@ public class BackgroundGlitchSwitcher : MonoBehaviour
             {
                 // 글리치 ON
                 GlitchOverlay.SetActive(true);
+                GlitchHouse.SetActive(true);
 
                 // 랜덤한 시간 동안 ON 상태 유지
                 yield return new WaitForSeconds(Random.Range(minFlickerDuration, maxFlickerDuration));
 
                 // 글리치 OFF
                 GlitchOverlay.SetActive(false);
+                GlitchHouse.SetActive(false);
 
                 // 다음 깜빡임까지 랜덤 대기
                 yield return new WaitForSeconds(Random.Range(minFlickerDuration, maxFlickerDuration));
