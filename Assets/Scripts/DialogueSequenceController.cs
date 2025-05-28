@@ -25,7 +25,7 @@ public class DialogueSequenceController : MonoBehaviour
 
     public void StartSequence(System.Action onSequenceStarted = null)
     {
-        // Ä«¸Þ¶ó ÃÊ±â À§Ä¡¿Í Å©±â ÀúÀå
+        // Ä«ï¿½Þ¶ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         initialCameraPos = mainCamera.transform.position;
         initialCameraSize = mainCamera.orthographicSize;
 
@@ -33,7 +33,7 @@ public class DialogueSequenceController : MonoBehaviour
     }
 
 
-    [SerializeField] private float cameraYOffset = 1.5f;  // ´ë»ç¸¦ ¶ç¿ì±â À§ÇÑ Ä«¸Þ¶ó À§ÂÊ ¿ÀÇÁ¼Â
+    [SerializeField] private float cameraYOffset = 1.5f;  // ï¿½ï¿½ç¸¦ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private IEnumerator ZoomAndPause(System.Action onDone = null)
     {
@@ -50,7 +50,7 @@ public class DialogueSequenceController : MonoBehaviour
         Vector3 startPos = mainCamera.transform.position;
         Vector3 targetPos = new Vector3(
             playerScript.transform.position.x,
-            playerScript.transform.position.y + cameraYOffset, // ¿©±â ÁÖ¸ñ
+            playerScript.transform.position.y + cameraYOffset, // ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¸ï¿½
             startPos.z
         );
 
@@ -72,7 +72,7 @@ public class DialogueSequenceController : MonoBehaviour
 
     public void EndSequence()
     {
-        // Ä«¸Þ¶ó ÁÜ º¹±Í
+        // Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         StartCoroutine(ZoomOutAndResume());
     }
 
@@ -92,8 +92,8 @@ public class DialogueSequenceController : MonoBehaviour
             yield return null;
         }
 
-        dialogueUI.SetActive(false);         // ¸»Ç³¼± UI ²ô±â
-        playerScript.enabled = true;         // ÀÌµ¿ ´Ù½Ã Çã¿ë
+        dialogueUI.SetActive(false);         // ï¿½ï¿½Ç³ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½
+        playerScript.enabled = true;         // ï¿½Ìµï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½
     }
 
 }

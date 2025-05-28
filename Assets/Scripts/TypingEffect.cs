@@ -5,17 +5,14 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class TypingEffect_Stage0 : MonoBehaviour
+public class TypingEffect : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;  // TMP Text 연결
     public float typingSpeed = 0.5f;     // 한 글자당 딜레이
     public float deletingSpeed = 0.03f;
     public float delayBeforeDelete = 1.0f;
     public GameObject nextButton;
-    private string[] messages = {
-        "Wake up.... again",
-        "Let's go to work"
-    }; // 출력할 문장
+    private string[] messages = { }; // 출력할 문장
 
     void Start() // 게임 오브젝트가 처음 활성화될 때 자동 호출
     {
