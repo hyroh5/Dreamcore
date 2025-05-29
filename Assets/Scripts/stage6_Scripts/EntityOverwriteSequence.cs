@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class EntityOverwriteSequence : MonoBehaviour
 {
@@ -36,12 +38,12 @@ public class EntityOverwriteSequence : MonoBehaviour
     public void BeginOverwriteWarning()
     {
         errorCanvas.SetActive(false);
-        warningPanel.SetActive(true);
+        warningPanel.SetActive(true); // 경고창 띄우기
 
         yesButton.onClick.RemoveAllListeners();
-        yesButton.onClick.AddListener(() =>
+        yesButton.onClick.AddListener(() => // yes 누르면
         {
-            warningPanel.SetActive(false);
+            warningPanel.SetActive(false); // 경고창 없애고
             StartCoroutine(CloningSequence());
         });
     }
@@ -54,7 +56,7 @@ public class EntityOverwriteSequence : MonoBehaviour
 
     IEnumerator CloningSequence()
     {
-        // 2. Cloning process initiated... 깜박임
+        // 2. Cloning process initiated... 깜빡임
         for (int i = 0; i < 5; i++)
         {
             cloneTextBox.text = "[Cloning process initiated...]";
@@ -71,11 +73,9 @@ public class EntityOverwriteSequence : MonoBehaviour
         cloneTextBox.text += "> Template: player_34 v1.0";
         yield return new WaitForSeconds(0.8f);
 
-        // 4. 배경 교체
+        // 4. 배경 교체 및 이미지 교차 중단
         normalBackground.SetActive(false);
         damagedBackground.SetActive(true);
-
-        // → 이미지 교차 중단
         stage6background flasher = FindObjectOfType<stage6background>();
         if (flasher != null) flasher.StopFlashing();
 
@@ -98,49 +98,44 @@ public class EntityOverwriteSequence : MonoBehaviour
         {
             transferTextBox.text += "\n[Preparing transfer]";
             yield return new WaitForSeconds(0.3f);
-            transferTextBox.text = transferTextBox.text.Replace("[Preparing transfer]", "");
+            transferTextBox.text = transferTextBox.text.Replace("\n[Preparing transfer]", "");
             yield return new WaitForSeconds(0.3f);
         }
+
 
         transferTextBox.text += "\n> Assigning player_35 to world_002";
         yield return new WaitForSeconds(0.3f);
         transferTextBox.text += "\n> Linking environment: cloned from world_001";
         yield return new WaitForSeconds(0.8f);
 
-        // 8. Transfering... 점 움직임
+        // 8. Transfering... 점만 교체
+        transferTextBox.text += "\nTransfering";
+        int baseLen = transferTextBox.text.Length;
+
         string[] dots = { ".", "..", "...", "." };
         for (int i = 0; i < 5; i++)
         {
-            transferTextBox.text += $"\nTransfering{dots[i % dots.Length]}";
+            transferTextBox.text = transferTextBox.text.Substring(0, baseLen) + dots[i % dots.Length];
             yield return new WaitForSeconds(0.8f);
         }
 
+        // 9. 완료 메시지
         transferTextBox.text += "\n[Transfer complete]";
         yield return new WaitForSeconds(0.3f);
         transferTextBox.text += "\n> player_35 successfully deployed";
         transferTextBox.text += "\n> instance moved to world_002";
-
-        yield return new WaitForSeconds(0.8f);
         clonePlayer.SetActive(false);
 
-        // 9. 텍스트 숨기고 이미지 캔버스 전환
+        yield return new WaitForSeconds(0.8f);
+
+        // 10. 정리
+        
         transferTextBox.gameObject.SetActive(false);
         damagedimageCanvas.SetActive(true);
 
-        StartCoroutine(FlickerDamagedText());
+        // 10. Stage7로 씬 전환
+        yield return new WaitForSeconds(1f); // 전환 전에 약간 딜레이
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Scene7_stage7");
     }
 
-    IEnumerator FlickerDamagedText()
-    {
-        if (damagedTextMaterial == null)
-            yield break;
-
-        for (int i = 0; i < 20; i++)
-        {
-            damagedTextMaterial.SetFloat("_Sharpness", -1);  // 깨짐 효과
-            yield return new WaitForSeconds(0.05f);
-            damagedTextMaterial.SetFloat("_Sharpness", 0);   // 정상
-            yield return new WaitForSeconds(0.05f);
-        }
-    }
 }
