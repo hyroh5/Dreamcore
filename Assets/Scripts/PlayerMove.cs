@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class PlayerMove : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+
+        if (SceneManager.GetActiveScene().name == "Scene6_stage6")
+        {
+            DontDestroyOnLoad(gameObject); // Stage6일 때만 유지
+        }
     }
 
     private void FixedUpdate() // 50번/1초 -> 지속적인 키 입력은 FixedUpdate에서
