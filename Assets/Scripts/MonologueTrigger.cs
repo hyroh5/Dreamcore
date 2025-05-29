@@ -21,7 +21,21 @@ public class MonologueTrigger : MonoBehaviour
     public Vector2 bubbleSize = new Vector2(300, 100);
     public float displayDuration = 3f;
 
+    public Transform canvasTransform; // Inspector에서 직접 할당하게 변경
     private bool hasTriggered = false;
+
+    public void TriggerMonologue(string content)
+    {
+        monologueText = content;
+        if (monologueCanvas != null && !monologueCanvas.activeSelf)
+        {
+            monologueCanvas.SetActive(true);
+        }
+        hasTriggered = true; // 자동 트리거 막기 (필요시)
+        StartCoroutine(ShowSpeechBubble());
+    }
+
+
 
     void Update()
     {
@@ -35,9 +49,20 @@ public class MonologueTrigger : MonoBehaviour
         }
     }
 
+
+
     IEnumerator ShowSpeechBubble()
     {
-        Transform canvasTransform = GameObject.Find("MonologueCanvas").transform;
+
+        
+        // inspector에서 받은 canvasTransform 사용
+        if (canvasTransform == null)
+        {
+            Debug.LogError("canvasTransform is not assigned.");
+            yield break;
+        }
+
+
         GameObject bubble = Instantiate(speechBubblePrefab, player.position + offset, Quaternion.identity, canvasTransform);
 
         RectTransform rect = bubble.GetComponent<RectTransform>();
@@ -60,6 +85,8 @@ public class MonologueTrigger : MonoBehaviour
         {
             text.text += c;
             yield return new WaitForSeconds(typingSpeed);
+            Debug.Log("말풍선 생성됨: " + bubble.transform.position);
+
 
             // 출력 중에도 위치 따라가게 보정
             bubble.transform.position = Camera.main.WorldToScreenPoint(player.position + offset);

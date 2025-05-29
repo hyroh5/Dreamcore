@@ -19,10 +19,19 @@ public class SensoryLogTyper : MonoBehaviour
     private int totalBars = 20;
     private List<int> glitchSteps;
 
+    public AudioClip painSound;
+    private AudioSource audioSource;
+
+    [Header("외부 참조")]
+    public MonologueTrigger7 monologueTrigger; // Inspector에서 직접 할당!
+
     void Start()
     {
         GenerateRandomGlitchSteps();
         StartCoroutine(PlaySequence());
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
     }
 
     void GenerateRandomGlitchSteps()
@@ -30,7 +39,7 @@ public class SensoryLogTyper : MonoBehaviour
         glitchSteps = new List<int>();
         HashSet<int> chosen = new HashSet<int>();
 
-        while (chosen.Count < 2) // 에러 2개만
+        while (chosen.Count < 2)
         {
             int step = Random.Range(3, totalBars - 2);
             if (!chosen.Contains(step))
@@ -40,7 +49,7 @@ public class SensoryLogTyper : MonoBehaviour
             }
         }
 
-        glitchSteps.Sort(); // 순서 보장
+        glitchSteps.Sort();
     }
 
     IEnumerator PlaySequence()
@@ -67,17 +76,27 @@ public class SensoryLogTyper : MonoBehaviour
                 visionText.text = baseText + "[ERROR...]";
 
                 int errorIndex = glitchSteps.IndexOf(i);
+
                 if (errorIndex == 0)
                 {
                     if (background1 != null) background1.SetActive(true);
                     if (eyeImages.Count > 0) eyeImages[0].SetActive(true);
-                    SpawnFloatingText("It hurts");
+
+                    if (monologueTrigger != null)
+                        monologueTrigger.TriggerMonologue("It hurts");
+
                 }
                 else if (errorIndex == 1)
                 {
                     if (background2 != null) background2.SetActive(true);
                     if (eyeImages.Count > 1) eyeImages[1].SetActive(true);
-                    SpawnFloatingText("help... it hurts");
+
+                    if (monologueTrigger != null)
+                        monologueTrigger.TriggerMonologue("help... it hurts");
+                    if (painSound != null && audioSource != null)
+                    {
+                        audioSource.PlayOneShot(painSound);
+                    }
                 }
 
                 yield return new WaitForSeconds(Random.Range(0.8f, 1.8f));
@@ -90,14 +109,24 @@ public class SensoryLogTyper : MonoBehaviour
         }
 
         visionText.text = "> vision_module → extracted";
+
+
+        if (monologueTrigger != null)
+        {
+            monologueTrigger.TriggerMonologue("I cannot see anything");
+            yield return new WaitForSeconds(3f);
+            monologueTrigger.hasTriggered = false;
+            monologueTrigger.TriggerMonologue("it hurts");
+            yield return new WaitForSeconds(3f);
+        }
     }
 
     void SpawnFloatingText(string message)
     {
         GameObject ft = Instantiate(floatingTextPrefab, player.transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
-        ft.transform.SetParent(player.transform); // 따라다니도록
+        ft.transform.SetParent(player.transform);
         TextMeshProUGUI text = ft.GetComponentInChildren<TextMeshProUGUI>();
         if (text != null) text.text = message;
-        Destroy(ft, 3f); // 3초 뒤 제거
+        Destroy(ft, 3f);
     }
 }
